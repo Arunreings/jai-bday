@@ -231,52 +231,61 @@
   </div>
 
   <script>
-    const countdownScreen = document.getElementById('countdown-screen');
-    const countdownEl = document.getElementById('countdown');
-    const mainContent = document.getElementById('main-content');
-     const birthdayDate = new Date('2025-11-11T00:00:00'); // 5-second countdown (change to your date)
+   const countdownScreen = document.getElementById('countdown-screen');
+  const countdownEl = document.getElementById('countdown');
+  const mainContent = document.getElementById('main-content');
 
-    function updateCountdown() {
-      const now = new Date();
-      const diff = birthdayDate - now;
+  // 🎂 Set your birthday date here (Format: YYYY-MM-DDTHH:MM:SS)
+  const birthdayDate = new Date('2025-11-10T22:09:00');
 
-      if (diff <= 0) {
-        countdownEl.textContent = "🎊 It's Time to Celebrate! 🎊";
-        setTimeout(showMainPage, 1000);
-        return;
-      }
+  function updateCountdown() {
+    const now = new Date();
+    const diff = birthdayDate - now;
 
-      const seconds = Math.floor((diff / 1000) % 60);
-      countdownEl.textContent = seconds + "s remaining...";
+    if (diff <= 0) {
+      countdownEl.textContent = "🎊 It's Time to Celebrate! 🎊";
+      setTimeout(showMainPage, 1000);
+      return;
     }
 
-    function showMainPage() {
-      countdownScreen.classList.add('hidden');
-      mainContent.classList.add('visible');
-      for (let i = 0; i < 100; i++) setTimeout(createPopper, i * 30);
-    }
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
 
-    function createPopper() {
-      const popper = document.createElement('div');
-      popper.classList.add('popper');
-      document.body.appendChild(popper);
+    countdownEl.textContent = 
+      `${days} Days ${hours} Hours ${minutes} Minutes ${seconds} Seconds 🎂`;
+  }
 
-      const colors = ['#FF69B4', '#FFD700', '#ADFF2F', '#00BFFF', '#FF6347'];
-      const size = Math.random() * 12 + 8 + 'px';
-      popper.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      popper.style.left = Math.random() * window.innerWidth + 'px';
-      popper.style.bottom = '0px';
-      popper.style.width = size;
-      popper.style.height = size;
+  function showMainPage() {
+    countdownScreen.classList.add('hidden');
+    mainContent.classList.add('visible');
+    for (let i = 0; i < 100; i++) setTimeout(createPopper, i * 30);
+  }
 
-      setTimeout(() => popper.remove(), 1000);
-    }
+  function createPopper() {
+    const popper = document.createElement('div');
+    popper.classList.add('popper');
+    document.body.appendChild(popper);
 
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
+    const colors = ['#FF69B4', '#FFD700', '#ADFF2F', '#00BFFF', '#FF6347'];
+    const size = Math.random() * 12 + 8 + 'px';
+    popper.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    popper.style.left = Math.random() * window.innerWidth + 'px';
+    popper.style.bottom = '0px';
+    popper.style.width = size;
+    popper.style.height = size;
+
+    setTimeout(() => popper.remove(), 1000);
+  }
+
+  // Update every second
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
   </script>
 </body>
 </html>
+
 
 
 
