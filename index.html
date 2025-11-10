@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday!</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+      overflow-x: hidden;
+      color: #004E7C;
+      text-align: center;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Countdown Screen */
+    #countdown-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      font-size: 2em;
+      color: #004E7C;
+      transition: opacity 1s ease-in-out;
+    }
+
+    #countdown-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #countdown {
+      font-size: 2.5em;
+      font-weight: bold;
+      animation: pulseText 1s infinite;
+    }
+
+    @keyframes pulseText {
+      0%, 100% { transform: scale(1); color: #004E7C; }
+      50% { transform: scale(1.2); color: #0077B6; }
+    }
+
+    /* Main Page (hidden initially) */
+    .main-content {
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    .main-content.visible {
+      opacity: 1;
+    }
+
+    header {
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      z-index: 2;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #004E7C;
+      animation: fadeInDown 2s ease-in-out;
+    }
+
+    p {
+      margin-top: 10px;
+      font-size: 1.2em;
+    }
+
+    .photo-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+      margin-top: 20px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .card img {
+      width: 100%;
+      /* height: 220px; */
+      object-fit: cover;
+      border-bottom: 3px solid #87CEEB;
+    }
+
+    .card h3 {
+      padding: 10px;
+      font-size: 1.2em;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 1em;
+      padding: 10px;
+      color: #004E7C;
+      z-index: 2;
+      position: relative;
+    }
+
+    /* Balloons */
+    .balloon {
+      position: absolute;
+      bottom: -150px;
+      width: 60px;
+      height: 80px;
+      background-color: #FFB6C1;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: floatUp 10s infinite ease-in;
+    }
+
+    .balloon::before {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 50px;
+      background: #666;
+      bottom: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    .balloon:nth-child(1) { left: 10%; background-color: #FF69B4; animation-delay: 0s; }
+    .balloon:nth-child(2) { left: 40%; background-color: #FFD700; animation-delay: 2s; }
+    .balloon:nth-child(3) { left: 70%; background-color: #ADFF2F; animation-delay: 4s; }
+
+    /* Popper Animation */
+    .popper {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: pop 1s ease-out forwards;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(1) translateY(0); opacity: 1; }
+      100% { transform: scale(0.5) translateY(-100px); opacity: 0; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 2em; }
+      p { font-size: 1em; }
+      .card h3 { font-size: 1em; }
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.8em; }
+      .photo-gallery { grid-template-columns: 1fr; }
+      .card { width: 90%; margin: auto; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Countdown Screen -->
+  <div id="countdown-screen">
+    <h2>🎉 Countdown to the Celebration 🎂</h2>
+    <div id="countdown">Loading...</div>
+  </div>
+
+  <!-- Main Page -->
+  <div class="main-content" id="main-content">
+    <header>
+      <h1>🎂 Happy Birthday, Jay! 🤍</h1>
+      <p>Yesappa unnai Asirvathipar - By Archa</p>
+    </header>
+
+    <section class="photo-gallery">
+      <div class="card">
+        <img src="jai-1.jpeg" alt="Memory 1">
+        <h3>Our Memory 1</h3>
+      </div>
+      <div class="card">
+        <img src="jai-2.jpeg" alt="Memory 2">
+        <h3>Our Memory 2</h3>
+      </div>
+      <div class="card">
+        <img src="jai-3.jpeg" alt="Memory 3">
+        <h3>Our Memory 3</h3>
+      </div>
+    </section>
+
+    <footer>
+      <p>Made with 💙 and joy for you!</p>
+    </footer>
+
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+  </div>
+
+  <script>
+    const countdownScreen = document.getElementById('countdown-screen');
+    const countdownEl = document.getElementById('countdown');
+    const mainContent = document.getElementById('main-content');
+     const birthdayDate = new Date('2025-11-10T21:30:00'); // 5-second countdown (change to your date)
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = birthdayDate - now;
+
+      if (diff <= 0) {
+        countdownEl.textContent = "🎊 It's Time to Celebrate! 🎊";
+        setTimeout(showMainPage, 1000);
+        return;
+      }
+
+      const seconds = Math.floor((diff / 1000) % 60);
+      countdownEl.textContent = seconds + "s remaining...";
+    }
+
+    function showMainPage() {
+      countdownScreen.classList.add('hidden');
+      mainContent.classList.add('visible');
+      for (let i = 0; i < 100; i++) setTimeout(createPopper, i * 30);
+    }
+
+    function createPopper() {
+      const popper = document.createElement('div');
+      popper.classList.add('popper');
+      document.body.appendChild(popper);
+
+      const colors = ['#FF69B4', '#FFD700', '#ADFF2F', '#00BFFF', '#FF6347'];
+      const size = Math.random() * 12 + 8 + 'px';
+      popper.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      popper.style.left = Math.random() * window.innerWidth + 'px';
+      popper.style.bottom = '0px';
+      popper.style.width = size;
+      popper.style.height = size;
+
+      setTimeout(() => popper.remove(), 1000);
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
